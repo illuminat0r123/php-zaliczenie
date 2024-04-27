@@ -22,11 +22,8 @@
             </ul>
         </nav>
         <article>
-            <?php if($page === 'create'){
-                include_once('./templates/pages/create.php');
-            } else {
-                include_once('./templates/pages/list.php');
-            }
+            <?php
+                require_once("./templates/pages/$page.php");
             ?>
         </article>
     </main>
