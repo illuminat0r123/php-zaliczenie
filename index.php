@@ -17,7 +17,15 @@ $viewParams = [];
 
 if($action === 'create') {
     $page = 'create';
-    $viewParams['resultCreate'] = 'Udało się stworzyć notatkę';
+    $created = false;
+    if(!empty($_POST)) {
+        $viewParams = [
+            'title' => $_POST['title'],
+            'description' => $_POST['description'],
+        ];
+        $created = true;
+    }
+    $viewParams['created'] = $created;
 } else {
     $page = 'list';
     $viewParams['resultList'] = 'Wyświetlamy nową notatkę';
