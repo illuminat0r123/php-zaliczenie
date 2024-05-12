@@ -48,6 +48,22 @@ class Database
             throw new StorageException('Nie udało się pobrać danych o notatce');
         } 
     }
+
+    public function getNote(int $id) : array 
+    {
+        try {
+            $query = "SELECT * FROM notes WHERE id=$id";
+            $result = $this->conn->query($query);
+            $note = $result->fetch(PDO::FETCH_ASSOC);
+        } catch (Throwable $e) {
+            throw new StorageException('Nie udało się pobrać notatki', 400, $e);
+        }
+        if (!$note) {
+            throw new NotFoundException('Notatka o id: $id nie istnieje.');
+        }
+
+        return $note;
+    }
     private function createConnection(array $config): void{
         $dsn = "mysql:dbname={$config['database']};host={$config['host']}";
             $this->conn = new PDO(

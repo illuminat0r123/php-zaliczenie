@@ -45,7 +45,28 @@ class controller
                     ];
                     $this->database->createNote($noteData);
                     header('Location: /?before=created');
+                    exit;
                 }
+                break;
+            case 'show':
+                $page = 'show';
+                $data = $this->getRequestGet();
+                $noteId = (int) $data['id'] ?? null;
+                if(!$noteId) {
+                    header('Location: /?error=missingNoteId');
+                    exit;
+                }
+                try {
+                    $note = $this->database->getNote($noteId);
+                }   catch (NotFoundException $e) {
+                    header('Location: /?error=noteNotFound');
+                    exit;
+                }
+                $viewParams = [
+                    'title' => 'Moja notatka',
+                    'description' => 'Opis notatki dodany na sztywno w kodzie',
+                    'note' => $note,
+                ];
                 break;
             default:
                 $page = 'list';
@@ -53,6 +74,7 @@ class controller
                 $viewParams = [
                     'notes' => $this->database->getNotes(),
                     'before' => $data['before'] ?? null,
+                    'error' => $data['error'] ?? null,
                 ];
         
         }
