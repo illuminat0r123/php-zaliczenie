@@ -19,8 +19,7 @@ class NoteController extends AbstractController
                 'description' => $this->request->postParam('description'),
             ];
             $this->database->createNote($noteData);
-            header('Location: /?before=created');
-            exit;
+            $this->redirect('/', ['before' => 'created']);
         }
         $this->view->render('create');
     }
@@ -28,14 +27,12 @@ class NoteController extends AbstractController
     {
         $noteId = (int) $this->request->getParam('id');
         if(!$noteId) {
-            header('Location: /?error=missingNoteId');
-            exit;
+            $this->redirect('/', ['before' => 'missingNoteId']);
         }
         try {
             $note = $this->database->getNote($noteId);
         }   catch (NotFoundException $e) {
-            header('Location: /?error=noteNotFound');
-            exit;
+            $this->redirect('/', ['before' => 'noteNotFound']);
         }
         $this->view->render('show', ['note' => $note]);
     }
@@ -47,4 +44,5 @@ class NoteController extends AbstractController
             'error' => $this->request->getParam('error'),
         ]);
     }
+    // Metoda edit ation odpowiedzialna za render edit.php i sprwadzająca czy id istnieje, jest poprwana itp.
 }

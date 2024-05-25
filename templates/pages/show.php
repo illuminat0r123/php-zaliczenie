@@ -19,6 +19,9 @@
                     <button>Powrót do listy notatek</button>
                 </a>
             </li>
+            <!-- Tutaj trzeba utworzyć kolejne li, a w nim jak powyżej button tylko zamiast
+            listy notatek ma być "edytuj" i ma przekierowywać do URL z action=edit i
+            przyjmować if tej notatki analogicznie jak już t orobiliśmy -->
         </ul>
         <?php else : ?>
             <div>Brak notatki do wyświetlenia</div>
