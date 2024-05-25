@@ -2,22 +2,21 @@
 
 declare(strict_types=1);
 
-namespace App;
+spl_autoload_register(function (string $name) {
+    $name = str_replace(['\\', 'App/'], ['/', ''], $name);
+    $path = "src/$name.php";
+    require_once($path);
+});
 
-require_once('./src/Request.php');
-require_once('./src/NoteController.php');
-include_once('./src/utils/debug.php');
+include_once("./src/utils/debug.php");
 require_once('./config/config.php');
-require_once('./Exception/AppException.php');
-require_once('./Exception/StorageException.php');
-require_once('./Exception/ConfigurationException.php');
 
 use App\Request;
 use App\Exception\AppException;
 use App\Exception\StorageException;
 use App\Exception\ConfigurationException;
-use Throwable;
-
+use App\Controller\NoteController;
+use App\Controller\AbstractController;
 
 try {
     AbstractController::initConfiguration($configuration);
@@ -27,7 +26,7 @@ try {
 } catch (AppException $e) {
     echo "<h1>Wystąpił błąd w aplikacji</h1>";
     echo "<h2>{$e->getMessage()}</h2>";
-} catch (Throwable $e) {
+} catch (\Throwable $e) {
     echo "<h1>Wystąpił błąd w aplikacji - skontaktuj się z administratorem</h1>";
     dump($e);
 }
